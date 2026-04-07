@@ -164,6 +164,34 @@ def get_activity_recommendations(weather: Dict, preferences: Dict) -> List[str]:
 
     activities = []
 
+    pref_activities = preferences.get("activities", {})
+
+    all_possible_activities = [
+        "Outdoor hiking",
+        "Biking",
+        "Visit parks",
+        "Beach activities",
+        "Outdoor sports",
+        "Walking",
+        "Jogging",
+        "Outdoor dining",
+        "Shopping",
+        "Visit museums",
+        "Coffee shops",
+        "Leisurely walks",
+        "Indoor activities",
+        "Shopping centers",
+        "Movies",
+        "Cafes",
+        "Visit nearby locations",
+        "Limited outdoor time",
+    ]
+
+    for act in all_possible_activities:
+        weight = pref_activities.get(act, 0)
+        if weight >= 2:
+            activities.append(act)
+
     if 65 <= temp <= 80 and weather_code <= 3:
         activities.extend(
             [
@@ -200,7 +228,6 @@ def get_activity_recommendations(weather: Dict, preferences: Dict) -> List[str]:
             ]
         )
 
-    pref_activities = preferences.get("activities", {})
     if pref_activities:
         weighted_acts = []
         for act in activities:
